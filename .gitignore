@@ -1,4 +1,9 @@
 /.github
 /node_modules
 /vendor
+<<<<<<< HEAD
 .env
+=======
+.env
+
+>>>>>>> b8cfbde13c04c6e0bdcb66955acd0cc44b7d5c94

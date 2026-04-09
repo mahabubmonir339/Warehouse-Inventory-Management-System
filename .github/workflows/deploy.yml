@@ -1,0 +1,60 @@
+name: Laravel Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up PHP
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          extensions: mbstring, bcmath, intl, pdo_mysql, tokenizer
+          ini-values: post_max_size=256M, upload_max_filesize=256M
+          coverage: none
+
+      # Step 3: Deploy to VPS via SSH
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: wims_tes1
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            echo "🌐 Navigating to public_html..."
+            cd ~/public_html || exit 1
+
+            echo "🔄 Pulling latest code..."
+            git reset --hard
+            git clean -fd
+            git pull origin main
+
+            echo "📦 Installing dependencies..."
+            composer install --no-dev --optimize-autoloader --no-interaction
+
+            echo "⚙️ Running migrations..."
+            php artisan migrate --force
+
+            echo "🧹 Clearing caches..."
+            php artisan cache:clear
+            php artisan config:clear
+            php artisan route:clear
+            php artisan view:clear
+
+            echo "🚀 Optimizing..."
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+
+            echo "✅ Deployment finished successfully!"
