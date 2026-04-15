@@ -2,8 +2,8 @@
   <div>
     <a
       @click="open = !open"
-      :class="open ? 'bg-blue-600' : ''"
-      class="cursor-pointer border-b border-darker flex items-center px-4 py-4 md:py-3 focus:bg-blue-600 hover:bg-blue-700"
+      :class="open ? 'bg-orange-600' : ''"
+      class="cursor-pointer border-b border-darker flex items-center px-4 py-4 md:py-3 focus:bg-orange-600 hover:bg-orange-600"
     >
       <span class="flex items-center grow">
         <slot name="icon">

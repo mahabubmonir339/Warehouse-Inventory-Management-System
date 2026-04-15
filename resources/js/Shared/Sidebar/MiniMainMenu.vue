@@ -9,7 +9,7 @@
 
           <menu-item-icon
             :href="route(menu.route)"
-            :class="{ 'bg-blue-600': isActiveUrl(route(menu.route)) }"
+            :class="{ 'bbg-orange-600': isActiveUrl(route(menu.route)) }"
             v-if="$can(menu.permissions) && !menu.sub_menu && !menu.hidden"
           >
             <template #icon v-if="menu.icon">
@@ -31,7 +31,7 @@
                     :hide-icon="true"
                     :href="route(sm.route)"
                     v-if="$can(sm.permissions) && !sm.hidden"
-                    :class="{ 'bg-blue-600': isActiveUrl(route(sm.route)) }"
+                    :class="{ 'bg-orange-600': isActiveUrl(route(sm.route)) }"
                   >
                     {{ trans(sm.lang) }}
                   </menu-item>

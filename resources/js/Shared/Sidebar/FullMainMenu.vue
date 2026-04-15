@@ -11,7 +11,7 @@
             <menu-item
               :href="route(menu.route)"
               v-if="$can(menu.permissions) && !menu.sub_menu && !menu.hidden"
-              :class="{ 'bg-blue-600': isActiveUrl(route(menu.route)) }"
+              :class="{ 'bg-orange-600': isActiveUrl(route(menu.route)) }"
             >
               <template #icon v-if="menu.icon">
                 <Icons :name="menu.icon" class="mr-3" />
@@ -30,7 +30,7 @@
                     space="less"
                     :href="route(sm.route)"
                     v-if="$can(sm.permissions) && !sm.hidden"
-                    :class="{ 'bg-blue-600': isActiveUrl(route(sm.route)), 'border-transparent': smi + 1 == menu.sub_menu.length }"
+                    :class="{ 'bg-orange-600': isActiveUrl(route(sm.route)), 'border-transparent': smi + 1 == menu.sub_menu.length }"
                   >
                     {{ trans(sm.lang) }}
                   </menu-item>
@@ -48,7 +48,7 @@
 
             <menu-item
               :href="route(menu.route)"
-              :class="{ 'bg-blue-600': isActiveUrl(route(menu.route)) }"
+              :class="{ 'bg-orange-600': isActiveUrl(route(menu.route)) }"
               v-if="$can(menu.permissions) && !menu.sub_menu && !menu.hidden"
             >
               <template #icon v-if="menu.icon">
@@ -66,7 +66,7 @@
                 <menu-item
                   :href="route(sm.route)"
                   v-if="$can(sm.permissions) && !sm.hidden"
-                  :class="{ 'bg-blue-600': isActiveUrl(route(sm.route)) }"
+                  :class="{ 'bg-orange-600': isActiveUrl(route(sm.route)) }"
                 >
                   <template #icon v-if="sm.icon">
                     <Icons :name="sm.icon" class="mr-3" />

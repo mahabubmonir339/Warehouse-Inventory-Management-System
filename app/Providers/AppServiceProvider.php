@@ -6,11 +6,12 @@ use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Tecdiary\Laravel\Attachments\AttachmentsServiceProvider;
-
+use Illuminate\Support\Facades\Schema;
 class AppServiceProvider extends ServiceProvider
 {
     public function boot()
-    {
+    {   
+        Schema::defaultStringLength(191);
         app()->useLangPath(base_path('lang'));
         JsonResource::withoutWrapping();
 

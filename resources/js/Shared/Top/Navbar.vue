@@ -66,6 +66,9 @@
             <tec-dropdown-link v-if="$can('create-units')" :href="route('units.create')">
               {{ $t('create_x', { x: $t('Unit') }) }}
             </tec-dropdown-link>
+            <!-- <tec-dropdown-link v-if="$can('create-rfid')" :href="route('rfid.create')">
+              {{ $t('create_x', { x: $t('RFID') }) }}
+            </tec-dropdown-link> -->
             <tec-dropdown-link v-if="$can('create-warehouses')" :href="route('warehouses.create')">
               {{ $t('create_x', { x: $t('Warehouse') }) }}
             </tec-dropdown-link>

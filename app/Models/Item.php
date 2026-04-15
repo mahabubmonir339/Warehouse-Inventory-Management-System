@@ -16,8 +16,21 @@ class Item extends Model
     ];
 
     protected $fillable = [
-        'name', 'code', 'symbology', 'track_weight', 'track_quantity', 'alert_quantity', 'rack_location', 'photo',
-        'has_variants', 'variants', 'sku', 'details', 'unit_id', 'account_id', 'extra_attributes',
+        'name',
+        'code',
+        'symbology',
+        'track_weight',
+        'track_quantity',
+        'alert_quantity',
+        'rack_location',
+        'photo',
+        'has_variants',
+        'variants',
+        'sku',
+        'details',
+        'unit_id',
+        'account_id',
+        'extra_attributes',
     ];
 
     protected $with = ['unit:id,code,name', 'unit.subunits'];
@@ -76,12 +89,12 @@ class Item extends Model
 
     public function scopeFromCategory($query, $category)
     {
-        return $query->whereHas('categories', fn ($query) => $query->where('name', 'like', '%' . $category . '%'));
+        return $query->whereHas('categories', fn($query) => $query->where('name', 'like', '%' . $category . '%'));
     }
 
     public function scopeOfCategory($query, $category)
     {
-        return $query->whereHas('categories', fn ($query) => $query->where('id', $category));
+        return $query->whereHas('categories', fn($query) => $query->where('id', $category));
     }
 
     public function serials()
@@ -107,5 +120,12 @@ class Item extends Model
     public function variations()
     {
         return $this->hasMany(Variation::class);
+    }
+
+
+    // customization start here
+    public function rfidAssignment()
+    {
+        return $this->morphOne(RfidTagAssignment::class, 'assignable');
     }
 }
