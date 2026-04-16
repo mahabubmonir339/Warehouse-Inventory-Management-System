@@ -2,82 +2,75 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\RfidTag;
-use App\Models\RfidScan;
-use App\Models\InventoryMovement;
-use App\Models\RfidReader;
+use App\Models\RfidTagAssignment;
+use App\Models\RfidScanLog;
+use App\Models\Item;
+use Illuminate\Http\Request;
 
 class RfidController extends Controller
 {
-    // 🔥 MAIN SCAN FUNCTION
+    // 📡 Live Scan Page
+    public function live()
+    {
+        return inertia('RFID/Live');
+    }
+
+    // 🏷️ Tag Assign Page
+    public function assign()
+    {
+        $tags = RfidTag::all();
+        $items = Item::all();
+
+        return inertia('RFID/Assign', compact('tags', 'items'));
+    }
+
+    // 🏷️ Save Tag Assign
+    public function storeAssign(Request $request)
+    {
+        // আগে check করো tag already assign কিনা
+        RfidTagAssignment::where('rfid_tag_id', $request->rfid_tag_id)->delete();
+
+        // নতুন assign
+        RfidTagAssignment::create([
+            'rfid_tag_id' => $request->rfid_tag_id,
+            'item_id' => $request->item_id,
+        ]);
+
+        return back()->with('success', 'Tag Assigned Successfully');
+    }
+
+    // 📊 Logs Page
+    public function logs()
+    {
+        $logs = RfidScanLog::latest()->get();
+
+        return inertia('RFID/Logs', compact('logs'));
+    }
+
+    // 📡 Scan API (IMPORTANT)
     public function scan(Request $request)
     {
-        // 1. Validate input
-        $request->validate([
-            'tag_uid' => 'required|string',
-            'reader_code' => 'nullable|string'
-        ]);
-
-        // 2. Find RFID Tag
-        $tag = RfidTag::where('tag_uid', $request->tag_uid)->first();
+        $tag = RfidTag::where('tag_code', $request->tag_code)->first();
 
         if (!$tag) {
-            return response()->json([
-                'status' => false,
-                'message' => 'RFID Tag not found'
-            ], 404);
+            return response()->json(['error' => 'Tag not found'], 404);
         }
 
-        // 3. Get Assignment (Item/Location)
         $assignment = $tag->assignment;
 
-        if (!$assignment) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Tag not assigned'
-            ], 404);
-        }
+        $item_id = $assignment ? $assignment->item_id : null;
 
-        $item = $assignment->assignable;
-
-        // 4. Find Reader (optional)
-        $reader = null;
-        if ($request->reader_code) {
-            $reader = RfidReader::where('device_code', $request->reader_code)->first();
-        }
-
-        // =========================
-        // 🔹 STEP 5 → SAVE SCAN
-        // =========================
-        RfidScan::create([
-            'rfid_tag_id'    => $tag->id,
-            'rfid_reader_id' => $reader?->id,
-            'scanned_at'     => now()
+        // log save
+        RfidScanLog::create([
+            'tag_code' => $tag->tag_code,
+            'item_id' => $item_id,
+            'location' => $request->location,
         ]);
 
-        // =========================
-        // 🔹 STEP 6 → SAVE MOVEMENT
-        // =========================
-        InventoryMovement::create([
-            'item_id'        => $item->id,
-            'to_location_id' => $reader->location_id ?? null,
-            'rfid_tag_id'    => $tag->id,
-            'moved_at'       => now()
-        ]);
-
-        // =========================
-        // 🔹 RESPONSE
-        // =========================
         return response()->json([
-            'status' => true,
-            'message' => 'Scan successful',
-            'data' => [
-                'item_id'   => $item->id,
-                'item_name' => $item->name ?? 'N/A',
-                'tag_uid'   => $tag->tag_uid,
-                'location_id' => $reader->location_id ?? null
-            ]
+            'status' => 'ok',
+            'item_id' => $item_id,
         ]);
     }
 }

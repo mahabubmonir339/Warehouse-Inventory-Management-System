@@ -83,6 +83,16 @@ const menus = [
         permissions: ['create-checkins'],
         lang: { helper: 'create_x', main: 'Checkin' },
       },
+      {
+        name: 'rfid.live',
+        route: 'rfid.live',
+        icon: null,
+        hidden: false,
+        sub_menu: false,
+        target: 'rfid',
+        permissions: ['read-rfid'],
+        lang: { main: 'Scan Via RFID' },
+      }
     ],
   },
   {
@@ -115,6 +125,16 @@ const menus = [
         permissions: ['create-checkouts'],
         lang: { helper: 'create_x', main: 'Checkout' },
       },
+      {
+        name: 'rfid.live',
+        route: 'rfid.live',
+        icon: null,
+        hidden: false,
+        sub_menu: false,
+        target: 'rfid',
+        permissions: ['read-rfid'],
+        lang: { main: 'Scan Via RFID' },
+      }
     ],
   },
   {

@@ -3,6 +3,7 @@
 use App\Http\Controllers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\RfidController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::redirect('/dashboard', '/');
@@ -84,4 +85,14 @@ Route::prefix('commands')->middleware(['throttle:6,10', 'purchased'])->group(fun
 
         return redirect('notification')->with('message', Artisan::output());
     });
+});
+
+Route::prefix('rfid')->group(function () {
+
+    Route::get('/live', [RfidController::class, 'live'])->name('rfid.live');
+
+    Route::get('/assign', [RfidController::class, 'assign'])->name('rfid.assign');
+    Route::post('/assign', [RfidController::class, 'storeAssign']);
+
+    Route::get('/logs', [RfidController::class, 'logs'])->name('rfid.logs');
 });

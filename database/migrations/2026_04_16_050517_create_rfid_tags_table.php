@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('rfid_tags', function (Blueprint $table) {
             $table->id();
-            $table->string('tag_uid')->unique(); // RFID unique code
-            $table->enum('type', ['item', 'location', 'asset'])->default('item');
-            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->string('tag_code')->unique();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('rfid_tags');

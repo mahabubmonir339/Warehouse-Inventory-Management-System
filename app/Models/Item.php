@@ -123,9 +123,8 @@ class Item extends Model
     }
 
 
-    // customization start here
     public function rfidAssignment()
     {
-        return $this->morphOne(RfidTagAssignment::class, 'assignable');
+        return $this->hasOne(RfidTagAssignment::class);
     }
 }

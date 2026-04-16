@@ -6,20 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class RfidTag extends Model
 {
-    //
-    protected $fillable = [
-        'tag_uid',
-        'type',
-        'status'
-    ];
+    protected $fillable = ['tag_code', 'is_active'];
 
     public function assignment()
     {
         return $this->hasOne(RfidTagAssignment::class);
-    }
-
-    public function scans()
-    {
-        return $this->hasMany(RfidScan::class);
     }
 }

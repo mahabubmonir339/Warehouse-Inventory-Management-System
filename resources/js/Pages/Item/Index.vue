@@ -63,6 +63,7 @@
               <th class="px-6 pt-6 pb-4">{{ $t('Options') }}</th>
               <th class="px-6 pt-6 pb-4">{{ $t('Variants') }}</th>
               <th class="px-6 pt-6 pb-4">{{ $t('Relations') }}</th>
+              <th class="px-6 pt-6 pb-4">{{ $t('RFID Tags') }}</th>
               <th class="px-6 pt-6 pb-4" colspan="2">
                 {{ $t('Stock') }} {{ warehouse_id ? ' (' + warehouses.find(w => w.id == warehouse_id).code + ')' : '' }}
               </th>
@@ -134,6 +135,11 @@
                   <div v-if="item.unit">
                     <span class="text-gray-600">{{ $t('Unit') }}:</span> {{ item.unit.name }}
                   </div>
+                </div>
+              </td>
+              <td class="border-t" @click="goto(item)" :class="{ 'cursor-pointer': $can('read-items') }">
+                <div class="px-6 py-4 w-48">
+                  {{ item.rfidAssignment ? item.rfidAssignment.tag.code : '-' }}
                 </div>
               </td>
               <td class="border-t" @click="goto(item)" :class="{ 'cursor-pointer': $can('read-items') }">

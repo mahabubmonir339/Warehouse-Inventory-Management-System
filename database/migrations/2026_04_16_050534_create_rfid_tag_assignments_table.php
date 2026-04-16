@@ -14,18 +14,14 @@ return new class extends Migration
         Schema::create('rfid_tag_assignments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('rfid_tag_id')->constrained()->cascadeOnDelete();
-
-            // polymorphic relation (item, location)
-            $table->unsignedBigInteger('assignable_id');
-            $table->string('assignable_type');
-
-            $table->timestamp('assigned_at')->useCurrent();
-            $table->timestamp('unassigned_at')->nullable();
-
+            $table->foreignId('item_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('rfid_tag_assignments');

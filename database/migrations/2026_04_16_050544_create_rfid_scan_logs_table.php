@@ -11,20 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rfid_scans', function (Blueprint $table) {
+        Schema::create('rfid_scan_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('rfid_tag_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('rfid_reader_id')->nullable()->constrained()->nullOnDelete();
-
+            $table->string('tag_code');
+            $table->foreignId('item_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('location')->nullable();
             $table->timestamp('scanned_at')->useCurrent();
-            $table->string('signal_strength')->nullable();
-
             $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::dropIfExists('rfid_scans');
+        Schema::dropIfExists('rfid_scan_logs');
     }
 };

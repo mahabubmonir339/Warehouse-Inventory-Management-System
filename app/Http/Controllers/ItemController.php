@@ -46,7 +46,11 @@ class ItemController extends Controller
 
     public function show(Request $request, Item $item)
     {
-        $item->load(['categories:id,code,name', 'allStock.warehouse:id,code,name']);
+        $item->load([
+            'categories:id,code,name',
+            'allStock.warehouse:id,code,name',
+            'rfidAssignment.tag'
+        ]);
         $item->setRelation('stock', $item->allStock->groupBy('warehouse_id'));
 
         return $request->json ? $item : Inertia::render('Item/Show', ['item' => $item]);
