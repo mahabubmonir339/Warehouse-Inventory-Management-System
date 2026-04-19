@@ -122,7 +122,7 @@ class Item extends Model
         return $this->hasMany(Variation::class);
     }
 
-
+    // Custom relation for RFID Tag Assignment
     public function rfidAssignment()
     {
         return $this->hasOne(RfidTagAssignment::class);

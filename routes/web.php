@@ -70,6 +70,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Role Permissions
     Route::post('roles/{role}/permissions', [Controllers\RoleController::class, 'permissions'])->name('roles.permissions');
+
+    Route::prefix('rfid')->group(function () {
+        Route::get('/live', [RfidController::class, 'live'])->name('rfid.live');
+        Route::get('/assign', [RfidController::class, 'assign'])->name('rfid.assign');
+        Route::post('/assign', [RfidController::class, 'storeAssign'])->name('rfid.assign.store');
+        Route::get('/logs', [RfidController::class, 'logs'])->name('rfid.logs');
+    });
 });
 
 // Routes to run storage & migration commands
@@ -87,12 +94,3 @@ Route::prefix('commands')->middleware(['throttle:6,10', 'purchased'])->group(fun
     });
 });
 
-Route::prefix('rfid')->group(function () {
-
-    Route::get('/live', [RfidController::class, 'live'])->name('rfid.live');
-
-    Route::get('/assign', [RfidController::class, 'assign'])->name('rfid.assign');
-    Route::post('/assign', [RfidController::class, 'storeAssign']);
-
-    Route::get('/logs', [RfidController::class, 'logs'])->name('rfid.logs');
-});

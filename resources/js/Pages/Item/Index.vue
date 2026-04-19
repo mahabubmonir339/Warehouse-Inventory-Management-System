@@ -67,7 +67,7 @@
               <th class="px-6 pt-6 pb-4" colspan="2">
                 {{ $t('Stock') }} {{ warehouse_id ? ' (' + warehouses.find(w => w.id == warehouse_id).code + ')' : '' }}
               </th>
-              <!-- <th class="px-6 pt-6 pb-4" colspan="2">{{ $t('Details') }}</th> -->
+              <th class="px-6 pt-6 pb-4" colspan="2">{{ $t('Details') }}</th>
             </tr>
           </thead>
           <tbody>

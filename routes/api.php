@@ -17,4 +17,7 @@ use App\Http\Controllers\RfidController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/rfid/scan', [RfidController::class, 'scan']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/rfid/scan', [RfidController::class, 'scan'])->name('api.rfid.scan');
+});
