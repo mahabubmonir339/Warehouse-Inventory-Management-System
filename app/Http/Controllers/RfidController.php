@@ -246,7 +246,8 @@ class RfidController extends Controller
             'frequency' => $validated['frequency'] ?? null,
             'epc' => $validated['epc'] ?? null,
             'is_active' => true,
-            'account_id' => auth()->user()->account_id,
+            //'account_id' => auth()->user()->account_id,
+            'account_id' => auth()->user()?->account_id,
         ]);
 
         return back()->with('success', "RFID tag {$tag->tag_code} created successfully");

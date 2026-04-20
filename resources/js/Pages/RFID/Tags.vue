@@ -352,22 +352,40 @@ const closeModal = () => {
   Object.keys(errors).forEach((key) => delete errors[key]);
 };
 
-const submitForm = async () => {
+// const submitForm = async () => {
+//   submitting.value = true;
+//   try {
+//     if (editingTag.value) {
+//       await axios.put(route("rfid.tags.update", editingTag.value.id), form);
+//     } else {
+//       await axios.post(route("rfid.tags.store"), form);
+//     }
+//     router.visit(route("rfid.tags"));
+//     closeModal();
+//   } catch (error) {
+//     if (error.response?.data?.errors) {
+//       Object.assign(errors, error.response.data.errors);
+//     }
+//   } finally {
+//     submitting.value = false;
+//   }
+// };
+
+const submitForm = () => {
   submitting.value = true;
-  try {
-    if (editingTag.value) {
-      await axios.put(route("rfid.tags.update", editingTag.value.id), form);
-    } else {
-      await axios.post(route("rfid.tags.store"), form);
-    }
-    router.visit(route("rfid.tags"));
-    closeModal();
-  } catch (error) {
-    if (error.response?.data?.errors) {
-      Object.assign(errors, error.response.data.errors);
-    }
-  } finally {
-    submitting.value = false;
+
+  if (editingTag.value) {
+    router.put(route("rfid.tags.update", editingTag.value.id), form, {
+      onSuccess: () => closeModal(),
+      onError: (err) => Object.assign(errors, err),
+      onFinish: () => (submitting.value = false),
+    });
+  } else {
+    router.post(route("rfid.tags.store"), form, {
+      onSuccess: () => closeModal(),
+      onError: (err) => Object.assign(errors, err),
+      onFinish: () => (submitting.value = false),
+    });
   }
 };
 
