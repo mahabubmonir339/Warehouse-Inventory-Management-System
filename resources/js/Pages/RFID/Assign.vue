@@ -58,8 +58,8 @@ export default {
       item_id: '',
     });
 
-    const { props } = usePage();
-
+    //const { props } = usePage();
+    const page = usePage();
     const submitForm = () => {
       form.post(route('rfid.assign.store'), {
         onSuccess: () => {
@@ -68,7 +68,12 @@ export default {
       });
     };
 
-    return { form, submitForm, flash: props.value.flash };
-  },
+    // return { form, submitForm, flash: props.value.flash };
+    return {
+      form,
+      submitForm,
+      flash: page.props.flash || {}, // ✅ safe access
+    };
+      },
 };
 </script>

@@ -19,8 +19,9 @@ class HandleInertiaRequests extends Middleware
             'settings'  => get_settings(),
             'languages' => $langFiles->available,
             'flash'     => [
+                'success' => session('success'), // Add kora hoyece
                 'error'   => session('error'),
-                'message' => session('message'),
+                //'message' => session('message'),
             ],
         ]);
     }
