@@ -127,4 +127,22 @@ class Item extends Model
     {
         return $this->hasOne(RfidTagAssignment::class);
     }
+
+    // Current location tracking across warehouses
+    public function locations()
+    {
+        return $this->hasMany(ItemLocation::class);
+    }
+
+    // Get current location in specific warehouse
+    public function currentLocation()
+    {
+        return $this->hasOne(ItemLocation::class);
+    }
+
+    // Get location for specific warehouse
+    public function locationInWarehouse($warehouseId)
+    {
+        return $this->locations()->where('warehouse_id', $warehouseId)->first();
+    }
 }

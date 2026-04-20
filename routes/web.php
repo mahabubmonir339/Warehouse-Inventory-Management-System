@@ -72,10 +72,26 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('roles/{role}/permissions', [Controllers\RoleController::class, 'permissions'])->name('roles.permissions');
 
     Route::prefix('rfid')->group(function () {
+        // Display pages
         Route::get('/live', [RfidController::class, 'live'])->name('rfid.live');
         Route::get('/assign', [RfidController::class, 'assign'])->name('rfid.assign');
-        Route::post('/assign', [RfidController::class, 'storeAssign'])->name('rfid.assign.store');
         Route::get('/logs', [RfidController::class, 'logs'])->name('rfid.logs');
+        Route::get('/readers', [RfidController::class, 'readers'])->name('rfid.readers');
+        Route::get('/tags', [RfidController::class, 'tags'])->name('rfid.tags');
+        
+        // CRUD operations - Tags
+        Route::post('/tags', [RfidController::class, 'storeTag'])->name('rfid.tags.store');
+        Route::put('/tags/{tag}', [RfidController::class, 'updateTag'])->name('rfid.tags.update');
+        Route::delete('/tags/{tag}', [RfidController::class, 'destroyTag'])->name('rfid.tags.destroy');
+        Route::post('/tags/{tag}/unassign', [RfidController::class, 'unassignTag'])->name('rfid.tags.unassign');
+        
+        // CRUD operations - Assignment
+        Route::post('/assign', [RfidController::class, 'storeAssign'])->name('rfid.assign.store');
+        
+        // CRUD operations - Readers
+        Route::post('/readers', [RfidController::class, 'storeReader'])->name('rfid.readers.store');
+        Route::put('/readers/{reader}', [RfidController::class, 'updateReader'])->name('rfid.readers.update');
+        Route::delete('/readers/{reader}', [RfidController::class, 'destroyReader'])->name('rfid.readers.destroy');
     });
 });
 
@@ -94,3 +110,11 @@ Route::prefix('commands')->middleware(['throttle:6,10', 'purchased'])->group(fun
     });
 });
 
+// Route::prefix('rfid')->group(function () {
+//         Route::get('/live', [RfidController::class, 'live'])->name('rfid.live');
+//         Route::get('/assign', [RfidController::class, 'assign'])->name('rfid.assign');
+//         Route::post('/assign', [RfidController::class, 'storeAssign'])->name('rfid.assign.store');
+//         Route::get('/logs', [RfidController::class, 'logs'])->name('rfid.logs');
+//         Route::get('/readers', [RfidController::class, 'readers'])->name('rfid.readers');
+//         Route::get('/tags', [RfidController::class, 'tags'])->name('rfid.tags');
+//     });
